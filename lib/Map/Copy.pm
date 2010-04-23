@@ -1,51 +1,81 @@
 package Map::Copy;
 
-use warnings;
-use strict;
-
 =head1 NAME
 
 Map::Copy - The great new Map::Copy!
 
 =head1 VERSION
 
-Version 0.01
+Version 0.001_001
 
 =cut
 
-our $VERSION = '0.01';
+
+use vars qw(@EXPORT @EXPORT_OK $VERSION @ISA);
+
+BEGIN {
+    require Exporter;
+    @ISA = qw(Exporter);
+}
+
+our $VERSION = '0.001_001';
+
+$VERSION = eval $VERSION;
+
+@EXPORT = @EXPORT_OK = qw(cmap);
 
 
 =head1 SYNOPSIS
 
-Quick summary of what the module does.
+Often you want to make a copy of a variable and clean it up. You'd typically write this:
 
-Perhaps a little code snippet.
+    my $result = $start;
+    $result =~ tr/A-Z/a-z/;
+    $result =~ s/^\s+//;
+    $result =~ s/\s+$//;
 
-    use Map::Copy;
+Another alternative that's a little eviler
 
-    my $foo = Map::Copy->new();
-    ...
+    my $result;
+    for($result = $start) {
+        tr/A-Z/a-z/;
+        s/^\s+//;
+        s/\s+$//;
+    }     
 
+Map won't work since it alters $_ in place. Map is also going to force you to have parentesis to force an array.
+Enter Map::Copy: 
+
+    my $result = cmap {tr/A-Z/a-z/}
+                 cmap {s/^\s+//}
+                 cmap {s/\s+$//} $start;
+
+    or
+
+    my $result = cmap {tr/A-Z/a-z/; s/^\s+//; s/\s+$//} $start;
+                      
 =head1 EXPORT
 
-A list of functions that can be exported.  You can delete this section
-if you don't export anything, such as for a purely object-oriented module.
+cmap will be available anywhere you use this module.
+
+WARNING: I reserve the right to change the name of cmap. This is an experimental 
 
 =head1 SUBROUTINES/METHODS
 
-=head2 function1
+=head2 cmap
 
 =cut
 
-sub function1 {
-}
+sub cmap (&@) {
+    my ($block, @copy) = @_;
 
-=head2 function2
+    my $wantarray = wantarray;
+     
+    () = map {$block->($_)} @copy;
 
-=cut
-
-sub function2 {
+    return $copy[0] if(@copy == 1);    
+    return @copy;
+    return $wantarray ? @copy : $copy[0];
 }
 
 =head1 AUTHOR
@@ -57,9 +87,6 @@ Todd Rinaldo, C<< <toddr at cpan.org> >>
 Please report any bugs or feature requests to C<bug-map-copy at rt.cpan.org>, or through
 the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Map-Copy>.  I will be notified, and then you'll
 automatically be notified of progress on your bug as I make changes.
-
-
-
 
 =head1 SUPPORT
 
