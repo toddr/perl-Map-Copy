@@ -58,7 +58,7 @@ Enter Map::Copy:
 
 cmap will be available anywhere you use this module.
 
-WARNING: I reserve the right to change the name of cmap. This is an experimental 
+WARNING: I reserve the right to change the name of cmap. This module only has a dev version until we can decide if the subroutine name is appropriate.
 
 =head1 SUBROUTINES/METHODS
 
