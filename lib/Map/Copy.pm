@@ -2,7 +2,7 @@ package Map::Copy;
 
 =head1 NAME
 
-Map::Copy - The great new Map::Copy!
+Map::Copy
 
 =head1 VERSION
 
@@ -22,7 +22,7 @@ our $VERSION = '0.001_001';
 
 $VERSION = eval $VERSION;
 
-@EXPORT = @EXPORT_OK = qw(cmap);
+@EXPORT = @EXPORT_OK = qw(cpmap);
 
 
 =head1 SYNOPSIS
@@ -43,40 +43,57 @@ Another alternative that's a little eviler
         s/\s+$//;
     }     
 
-Map won't work since it alters $_ in place. Map is also going to force you to have parentesis to force an array.
-Enter Map::Copy: 
+Map won't work since it alters $_ in place. Map is also going to force you to have parentesis when processing a scalar.
 
-    my $result = cmap {tr/A-Z/a-z/}
-                 cmap {s/^\s+//}
-                 cmap {s/\s+$//} $start;
-
-    or
-
-    my $result = cmap {tr/A-Z/a-z/; s/^\s+//; s/\s+$//} $start;
-                      
-=head1 EXPORT
-
-cmap will be available anywhere you use this module.
-
-WARNING: I reserve the right to change the name of cmap. This module only has a dev version until we can decide if the subroutine name is appropriate.
+Enter Map::Copy.
 
 =head1 SUBROUTINES/METHODS
 
-=head2 cmap
+=head2 cpmap
+
+    my $result = cpmap {tr/A-Z/a-z/}
+                 cpmap {s/^\s+//}
+                 cpmap {s/\s+$//} $start;
+
+    or
+
+    my $result = cpmap {tr/A-Z/a-z/; s/^\s+//; s/\s+$//} $start;
+
+cpmap will also work with arrays:
+                      
+    my @results = cpmap {tr/A-Z/a-z/} @start;
+    
+Warning: using scalar with cpmap will not provide an array size like it would elsewhere.
+
+    # Don't do this because the results are unintuitive.
+    my $result = scalar cpmap {tr/A-Z/a-z/} @start;
+
+    # Do this if you only want to process the first one
+    my $result = cpmap {tr/A-Z/a-z/} $start[0];
+
+    # Do this if you want the count. Why put cpmap in the middle of things?
+    my $count = scalar @start;
 
 =cut
 
-sub cmap (&@) {
+sub cpmap (&@) {
+    my $wantarray = wantarray;
+    return unless defined $wantarray; # Don't execute map if return value is not being used.
+
     my ($block, @copy) = @_;
 
-    my $wantarray = wantarray;
-     
     () = map {$block->($_)} @copy;
 
-    return $copy[0] if(@copy == 1);    
-    return @copy;
     return $wantarray ? @copy : $copy[0];
 }
+
+=head1 EXPORT
+
+cpmap will be available anywhere you use this module.
+
+WARNING: I reserve the right to change the name of cpmap. This module only has a dev version until we can decide
+if the subroutine name is appropriate. I'm very open to comments. Comment on the RT ticket I'll be opening after
+I upload the module.
 
 =head1 AUTHOR
 
