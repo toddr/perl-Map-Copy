@@ -1,23 +1,27 @@
----
-abstract: 'The great new Map::Copy!'
+--- #YAML:1.0
+name:               Map-Copy
+version:            0.001_001
+abstract:           ~
 author:
-  - 'Todd Rinaldo <toddr@cpan.org>'
-build_requires:
-  ExtUtils::MakeMaker: 6.42
-  Test::More: 0
+    - Todd E Rinaldo <toddr@cpan.org>
+license:            perl
+distribution_type:  module
 configure_requires:
-  ExtUtils::MakeMaker: 6.42
-distribution_type: module
-generated_by: 'Module::Install version 0.94'
-license: perl
-meta-spec:
-  url: http://module-build.sourceforge.net/META-spec-v1.4.html
-  version: 1.4
-name: Map-Copy
-no_index:
-  directory:
-    - inc
-    - t
+    ExtUtils::MakeMaker:  0
+build_requires:
+    ExtUtils::MakeMaker:  0
+    Test::More:           0
+requires:
+    Test::More:  0
 resources:
-  license: http://dev.perl.org/licenses/
-version: 0.001_001
+    homepage:    http://wiki.github.com/toddr/perl-Map-Copy/
+    license:     http://dev.perl.org/licenses/
+    repository:  http://github.com/toddr/perl-Map-Copy
+no_index:
+    directory:
+        - t
+        - inc
+generated_by:       ExtUtils::MakeMaker version 6.56
+meta-spec:
+    url:      http://module-build.sourceforge.net/META-spec-v1.4.html
+    version:  1.4
