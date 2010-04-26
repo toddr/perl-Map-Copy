@@ -2,7 +2,7 @@ package Map::Copy;
 
 =head1 NAME
 
-Map::Copy
+Map::Copy - copy a scalar/array to another, translating it along the way in a map-ish fashion
 
 =head1 VERSION
 
