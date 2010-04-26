@@ -95,6 +95,21 @@ WARNING: I reserve the right to change the name of cpmap. This module only has a
 if the subroutine name is appropriate. I'm very open to comments. Comment on the RT ticket I'll be opening after
 I upload the module.
 
+
+current candidates for this sub are:
+
+=over 4
+
+=item * cpmap
+
+=item * cmap
+
+=item * translate
+
+=item * trans
+
+=back
+
 =head1 AUTHOR
 
 Todd Rinaldo, C<< <toddr at cpan.org> >>
